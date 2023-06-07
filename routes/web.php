@@ -29,6 +29,20 @@ Route::get(
 )->name('news');
 
 Route::get(
+    '/news/like/{page}/{id}', [
+    \App\Http\Controllers\NewListController::class,
+    'like',
+]
+)->name('news:like');
+
+Route::get(
+    '/news/dislike/{page}/{id}', [
+    \App\Http\Controllers\NewListController::class,
+    'dislike',
+]
+)->name('news:dislike');
+
+Route::get(
     '/storage/public/new-list/{id}.{extension}', function (int $_id) {
     /** @var \App\Models\File $file */
     $file = \App\Models\File::find($_id);

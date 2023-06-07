@@ -4,7 +4,6 @@
             {{ __('News') }} ({{$pagination['items']}})
         </h2>
         <h5>./artisan app:news-parse</h5>
-        <h5>Не успел реализовать лайки-дизлайки. Проблем не вижу, просто нужно время</h5>
     </x-slot>
 
     <div class="py-12">
@@ -19,6 +18,7 @@
                             <p>
                                 <h3>{{$new->title}}</h3>
                                 <b>{{$new->date}}</b>
+                                <b>Rating {{$new->rating}}</b>
                             </p>
                             <p>{{$new->description}}</p>
                             @foreach ($new->getTags() as $tag)
@@ -27,18 +27,20 @@
                             @if($new->getFile())
                                 <img src="{{$new->getFile()->getUri()}}" alt="image">
                             @endif
+                            <x-nav-link :href="route('news:like', ['page' => $pagination['page'], 'id' => $new->id])" :active="request()->routeIs('news')">like</x-nav-link>
+                            <x-nav-link :href="route('news:dislike', ['page' => $pagination['page'], 'id' => $new->id])" :active="request()->routeIs('news')">dislike</x-nav-link>
                         </div>
                     @endforeach
                 </div>
 
                 <div class="p-6 text-gray-900">
                     @if($pagination['page'] > 1)
-                        <x-nav-link :href="route('news',['page' => ($pagination['page'] - 1)])"
+                        <x-nav-link :href="route('news', ['page' => ($pagination['page'] - 1)])"
                                     :active="request()->routeIs('news')">&lt;</x-nav-link>
                     @endif
                     <span>{{$pagination['page']}}</span>
                     @if($pagination['page'] < $pagination['pages'])
-                        <x-nav-link :href="route('news',['page' => ($pagination['page'] + 1)])"
+                        <x-nav-link :href="route('news', ['page' => ($pagination['page'] + 1)])"
                                     :active="request()->routeIs('news')">&gt;</x-nav-link>
                     @endif
                 </div>
